@@ -1,0 +1,38 @@
+.editor-layout .wp-block-gutenberg-jpagano-blocks-media-object .media-object {
+  max-width: inherit;
+}
+
+.wp-block-gutenberg-jpagano-blocks-media-object .media-object {
+  margin: 1.5em auto;
+  max-width: 700px;
+}
+
+.wp-block-gutenberg-jpagano-blocks-media-object .media-object__image {
+  max-width: none;
+}
+
+.wp-block-gutenberg-jpagano-blocks-media-object .media-object__section {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.wp-block-gutenberg-jpagano-blocks-media-object .media-object__section:first-child {
+  padding-right: 2em;
+}
+
+.wp-block-gutenberg-jpagano-blocks-media-object .media-object__section:last-child:not(:nth-child(2)) {
+  padding-left: 2em;
+}
+
+.wp-block-gutenberg-jpagano-blocks-media-object .media-object__section > :last-child {
+  margin-bottom: 0;
+}
+
+.wp-block-gutenberg-jpagano-blocks-media-object .media-object__title {
+    margin-bottom: .5em;
+    margin-top: 0;
+}
+
+.wp-block-gutenberg-jpagano-blocks-media-object .media-object__section p {
+    margin-top: 0;
+}
