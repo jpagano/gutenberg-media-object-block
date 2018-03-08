@@ -1,8 +1,8 @@
 const { __ } = wp.i18n;
 const {
 	registerBlockType,
-	Editable,
-	MediaUploadButton,
+	RichText,
+	MediaUpload,
 	InspectorControls,
 	BlockDescription,
 	source: {
@@ -10,6 +10,7 @@ const {
 		children,
 	},
 } = wp.blocks;
+const { Button } = wp.components;
 
 registerBlockType( 'gutenberg-jpagano-blocks/media-object', {
 	title: __( 'Media Object' ),
@@ -18,40 +19,44 @@ registerBlockType( 'gutenberg-jpagano-blocks/media-object', {
 	attributes: {
 		title: {
 			type: 'array',
-			source: children( 'h2' ),
+			source: 'children',
+			selector: 'h2',
 		},
 		mediaID: {
 			type: 'number',
 		},
 		mediaURL: {
 			type: 'string',
-			source: attr( 'img', 'src' ),
+			source: 'attribute',
+			selector: 'img',
+			attribute: 'src',
 		},
 		content: {
 			type: 'array',
-			source: children( '.media-object__content' ),
+			source: 'children',
+			selector: '.media-object__content',
 		},
 	},
-	edit: ( props ) => {
+	edit: props => {
 		const focusedEditable = props.focus ? props.focus.editable || 'title' : null;
 		const attributes = props.attributes;
 
-		const onChangeTitle = ( value ) => {
+		const onChangeTitle = value => {
 			props.setAttributes( { title: value } );
 		};
-		const onFocusTitle = ( focus ) => {
+		const onFocusTitle = focus => {
 			props.setFocus( _.extend( {}, focus, { editable: 'title' } ) );
 		};
-		const onSelectImage = ( media ) => {
+		const onSelectImage = media => {
 			props.setAttributes( {
 				mediaURL: media.url,
 				mediaID: media.id,
 			} );
 		};
-		const onChangeContent = ( value ) => {
+		const onChangeContent = value => {
 			props.setAttributes( { content: value } );
 		};
-		const onFocusContent = ( focus ) => {
+		const onFocusContent = focus => {
 			props.setFocus( _.extend( {}, focus, { editable: 'content' } ) );
 		};
 
@@ -66,28 +71,26 @@ registerBlockType( 'gutenberg-jpagano-blocks/media-object', {
 			<div className={ props.className }>
 				<div className="media-object">
 					<div className="media-object__section">
-						<MediaUploadButton
-							buttonProps={
-								{
-									className: attributes.mediaID ?
-										'image-button' :
-										'components-button button button-large',
-								}
-							}
+						<MediaUpload
 							onSelect={ onSelectImage }
 							type="image"
 							value={ attributes.mediaID }
+							render={ ( { open } ) => (
+								<Button className={ attributes.mediaID ? 'image-button' : 'button button-large' } onClick={ open }>
+									{ ! attributes.mediaID ? __( 'Upload Image' ) : <img src={ attributes.mediaURL } /> }
+								</Button>
+							) }
 						>
 							{
 								attributes.mediaID ?
 									<img src={ attributes.mediaURL } className="media-object__image" alt={ attributes.alt } /> :
 									__( 'Upload Image' )
 							}
-						</MediaUploadButton>
+						</MediaUpload>
 					</div>
 
 					<div className="media-object__section">
-						<Editable
+						<RichText
 							tagName="h2"
 							className="media-object__title"
 							placeholder={ __( 'Media Object title' ) }
@@ -96,7 +99,7 @@ registerBlockType( 'gutenberg-jpagano-blocks/media-object', {
 							focus={ focusedEditable === 'title' }
 							onFocus={ onFocusTitle }
 						/>
-						<Editable
+						<RichText
 							tagName="div"
 							multiline="p"
 							className="media-object__content"
@@ -111,7 +114,7 @@ registerBlockType( 'gutenberg-jpagano-blocks/media-object', {
 			</div>,
 		];
 	},
-	save: ( props ) => {
+	save: props => {
 		const {
 			className,
 			attributes: {
