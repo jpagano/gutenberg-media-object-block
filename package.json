@@ -1,6 +1,6 @@
 {
   "name": "gutenberg-media-object",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "block.js",
   "devDependencies": {
     "babel-core": "^6.25.0",
